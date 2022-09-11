@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 
-import crypto from "crypto"
+import bcrypt from "bcrypt"
 
-const prisma = new PrismaClient
+const prisma = new PrismaClient()
 
 class UserController {
     async create(req: Request, res: Response) {
@@ -14,10 +14,11 @@ class UserController {
             where: { email }})
 
         if (userExits) {
-            return res.send("Your email is already registered!").status(401)
+            return res.send("Your email is already registered!")
         }
 
-        const hash = crypto.createHash("sha256", password).digest("hex")
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
 
         const user = await prisma.user.create({
             data: {
@@ -26,7 +27,7 @@ class UserController {
             }
         })
 
-        res.send(user)
+        return res.send(user)
     }
 }
 
