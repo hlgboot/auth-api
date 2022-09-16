@@ -15,9 +15,9 @@ class AuthController {
 
         if(!user) { return res.send("User not found!") }
 
-        const IsPasswordValid = await bcrypt.compare(password, user.password)
+        const match = await bcrypt.compare(password, user.password)
 
-        if(!IsPasswordValid) { return res.send("Incorrect password!") }
+        if(!match) { return res.send("Incorrect password!") }
 
         const secret = process.env.SECRET || ""
 

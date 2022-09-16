@@ -21,7 +21,7 @@ function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
 
         const { id } = data as TokenPayload
 
-        req.body.userId = id
+        req.userId = id
     } catch (err) {
         return res.sendStatus(401)
         // HTTP 401 Unauthorized

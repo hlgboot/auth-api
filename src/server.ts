@@ -9,7 +9,7 @@ const app = express()
 app.use(express.json())
 
 app.get("/", AuthMiddleware,(req: Request, res: Response ) => {
-    const userId = req.body.userId
+    const userId = req.userId
 
     return res.json({userId})
 })
